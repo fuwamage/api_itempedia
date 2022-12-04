@@ -24,6 +24,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::group(['middleware' => ['auth:sanctum']], function() {
     Route::get('/auth/user', [AuthController::class, 'IndexAuthUser']);
     Route::get('/auth/user/detail', [AuthController::class, 'getUser']);
+    Route::post('/auth/user/signout', [AuthController::class, 'signOutUser']);
 });
 
 // PUBLIC ROUTES
