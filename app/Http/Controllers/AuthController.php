@@ -199,7 +199,7 @@ class AuthController extends Controller
             ], 401);
         }
 
-        $token = $user->createToken('wrathnet_token')->plainTextToken;
+        $token = $user->createToken('itempedia_token')->plainTextToken;
 
         return response()->json([
             "status" => true,
