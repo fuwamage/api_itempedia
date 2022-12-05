@@ -190,7 +190,7 @@ class AuthController extends Controller
     public function signInUser(Request $request)
     {
         // check email
-        $user = User::where('name', $request['name'])->first();
+        $user = User::where('email', $request['email'])->first();
 
         // check password
         if(!$user || !Hash::check($request['password'], $user->password2)) {
