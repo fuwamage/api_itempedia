@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\Email\UserOTPController;
 
 /*
 |--------------------------------------------------------------------------
@@ -36,3 +37,5 @@ Route::post('/users/checkemail', [AuthController::class, 'indexAllEmail']);
 Route::get('/users/checkreferral/{code}', [AuthController::class, 'indexReferrerCode']);
 Route::post('/users/signup', [AuthController::class, 'storeUser']);
 Route::post('/users/signin', [AuthController::class, 'signInUser']);
+
+Route::post('/sendOTP', [UserOTPController::class, 'otp']);
