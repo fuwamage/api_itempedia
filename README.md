@@ -68,4 +68,4 @@ The Laravel framework is open-sourced software licensed under the [MIT license](
 ## Credentials
 - `git clone https://fuwamage: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@github.com/fuwamage/api_itempedia.git`
 - `git config user.name "fuwamage"`
-- `git config user.email "bhagas.pati@student.umn.ac.id"
+- `git config user.email "bhagaspati@student.umn.ac.id"`
