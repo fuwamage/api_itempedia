@@ -13,7 +13,7 @@ use App\Models\User;
 
 class AuthController extends Controller
 {
-    public function IndexUsers() {
+    public function IndexAllUsers() {
         $users = DB::table('users')->get();
 
         return response()->json([
@@ -286,6 +286,84 @@ class AuthController extends Controller
         return response()->json([
             "status" => true,
             "message" => 'You have successfully logged out',
+        ]);
+    }
+
+
+    // ========================================================= Account Configuration ================================================================================
+
+
+    public function updateAuthUser(Request $request)
+    {        
+        $validation = Validator::make($request->all(), [
+            'name' => 'max:12',
+            'email' => 'email',
+            'new_password' => 'max:12|required_with:repeat_new_password|same:repeat_new_password',
+            'repeat_new_password' => 'max:12|',
+            'avatar' => ''
+        ]);
+
+        if ($validation->fails()) {
+            return response()->json([
+                "status" => false,
+                "proof" => $request->name,
+                "message" => $validation->errors(),
+            ], 403);
+        } else {
+            $updated = User::where('id', auth()->user()->id)
+            ->update([
+                'name' => $request->name ? $request->name : auth()->user()->name,
+                'email' => $request->email ? $request->email : auth()->user()->email,
+                'password' => $request->new_password ? Hash::make($request->new_password) : auth()->user()->password
+            ]);
+            
+            if($updated) {
+                return response()->json([
+                    'status' => true,
+                    'message' => 'authenticated user has been updated',
+                    'avatar' => $request->avatar ? true : false
+                ]);
+            } else {
+                return response()->json([
+                    'status' => true,
+                    'message' => 'authenticated user data is not updated',
+                    'avatar' => $request->avatar ? true : false
+                ]);
+            }
+        }
+    }
+
+    public function storeAvatar($request) 
+    {
+        $validateAvatar = Validator::make($request->all(), [
+            'avatar' => 'required|mimes:jpg,jpeg,png,webp|max:10240'
+        ]);
+
+        if ($validateAvatar->fails()) :                                                             
+            return response()->json([
+                "status" => true,
+                "message" => $validateAvatar->errors(),
+            ], 403);                                                                            
+        endif;
+
+        $imageName = time().'.'.$request->avatar->extension();
+
+        $path = public_path('assets/avatar');
+        
+        if(!empty(auth()->user()->avatar) && file_exists($path.'/'.auth()->user()->avatar)) :
+            unlink($path.'/'.auth()->user()->avatar);
+        endif;
+
+        User::where('id', auth()->user()->id)->update([
+            'avatar' => auth()->user()->avatar = $imageName
+        ]);
+
+        $request->avatar->move($path, $imageName);
+
+        return response()->json([
+            'status' => true,
+            'message' => 'authenticated user has been updated',
+            'avatar' => true
         ]);
     }
 }

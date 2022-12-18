@@ -25,11 +25,15 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::group(['middleware' => ['auth:sanctum']], function() {
     Route::get('/auth/user', [AuthController::class, 'IndexAuthUser']);
     Route::get('/auth/user/detail', [AuthController::class, 'getUser']);
+    
+    Route::put('/auth/user/update', [AuthController::class, 'updateAuthUser']);
+    Route::post('/auth/user/store/avatar', [AuthController::class, 'storeAvatar']);
+
     Route::post('/auth/user/signout', [AuthController::class, 'signOutUser']);
 });
 
 // PUBLIC ROUTES
-Route::get('/users', [AuthController::class, 'IndexUsers']);
+Route::get('/users', [AuthController::class, 'IndexAllUsers']);
 Route::get('/users/{custom}', [AuthController::class, 'IndexUserByName']);
 
 
