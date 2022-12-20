@@ -11,7 +11,11 @@ class VerifyCsrfToken extends Middleware
      *
      * @var array<int, string>
      */
+    
+    // https://stackoverflow.com/questions/31627477/access-laravel-app-from-android-app-with-csrf-token
     protected $except = [
-        //
+        '*'
+        // 'mobile/*',
+        // 'news/articles',
     ];
 }
