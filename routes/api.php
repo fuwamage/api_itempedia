@@ -4,7 +4,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ShopController;
 use App\Http\Controllers\Email\UserOTPController;
+use App\Http\Controllers\PaymentGateway\MidtransController;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,13 +25,18 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 // PROTECTED ROUTES
 Route::group(['middleware' => ['auth:sanctum']], function() {
-    Route::get('/auth/user', [AuthController::class, 'IndexAuthUser']);
     Route::get('/auth/user/detail', [AuthController::class, 'getUser']);
     
     Route::put('/auth/user/update', [AuthController::class, 'updateAuthUser']);
     Route::post('/auth/user/store/avatar', [AuthController::class, 'storeAvatar']);
 
-    Route::post('/auth/user/signout', [AuthController::class, 'signOutUser']);
+    Route::delete('/auth/user/tokensdestroy', [AuthController::class, 'destroyTokens']);
+    Route::get('/auth/user/signout', [AuthController::class, 'signOutUser']);
+
+    Route::get('/auth/user/get/merchant', [ShopController::class, 'getAuthMerchant']);
+    Route::post('/auth/user/store/merchant', [ShopController::class, 'storeMerchant']);
+
+    Route::post('/auth/user/topup/midtrans', [MidtransController::class, 'ServerKeyMidtrans']);
 });
 
 // PUBLIC ROUTES

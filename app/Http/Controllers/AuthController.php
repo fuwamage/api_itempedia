@@ -23,15 +23,6 @@ class AuthController extends Controller
         ]);
     }
 
-    public function IndexAuthUser() {
-        $auth_user = DB::table('users')->where('id', auth()->user()->id)->first();
-        return response()->json([
-            'status' => true,
-            'message' => 'got your authenticated information',
-            'data' => $auth_user
-        ]);
-    }
-
     public function IndexUserByName($name){
         $auth_user = DB::table('users')->where('name', $name)->first();
 
@@ -246,6 +237,12 @@ class AuthController extends Controller
         }        
     }
 
+    
+    
+    // =============================================================== Sign Out ================================================================================
+    
+
+
     public function destroyTokens() {
         $key = [];
         
@@ -273,10 +270,6 @@ class AuthController extends Controller
             ]);
         }
     }
-
-
-    // =============================================================== Sign Out ================================================================================
-
 
     public function signOutUser()
     {
